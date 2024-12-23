@@ -1,3 +1,4 @@
+
 CREATE TABLE users
 (
     user_id        BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -52,4 +53,3 @@ CREATE TABLE listings
     CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES users (user_id),
     CONSTRAINT fk_date FOREIGN KEY (date_id) REFERENCES dates (date_id)
 );
-
