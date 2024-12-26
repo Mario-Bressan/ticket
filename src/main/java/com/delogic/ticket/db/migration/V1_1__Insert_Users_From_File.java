@@ -10,21 +10,31 @@ import java.sql.PreparedStatement;
 
 public class V1_1__Insert_Users_From_File extends BaseJavaMigration {
 
+    private static final String TRUE = "true";
+
     @Override
     public void migrate(Context context) throws Exception {
         Connection connection = context.getConnection();
-        int lineNumber = 0;
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
                 getClass().getResourceAsStream("/data/users.txt")))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] fields = line.split("\\|");
+                line = line.replaceAll("\\|\\||\\|$", "|null|");
+                line = line.replaceAll("\\|\\||\\|$", "|null|");
+                String[] fields = new String[18];
+                for (int i = 0; i < fields.length; i++) {
+                    fields[i] = "null";
+                }
+                String[] firstFields = line.split("\\|");
+                for (int i = 0; i < firstFields.length - 1; i++) {
+                    fields[i] = firstFields[i];
+                }
 
                 try (PreparedStatement statement = connection.prepareStatement(
                         "INSERT INTO users (user_id, username, first_name, last_name, address, prefered_flags) " +
-                                "VALUES (?, ?, ?, ?, JSON_OBJECT('city', ?, 'state', ?), " +
+                                "VALUES (?, ?, ?, ?, JSON_OBJECT('city', ?, 'state', ?, 'email', ?, 'phone', ?), " +
                                 "JSON_OBJECT('sports', ?, 'theatre', ?, 'concerts', ?, 'jazz', ?, 'classical', ?, 'opera', ?, 'rock', ?, 'vegas', ?, 'broadway', ?, 'musicals', ?))")) {
 
                     statement.setLong(1, Long.parseLong(fields[0])); // user_id
@@ -33,19 +43,24 @@ public class V1_1__Insert_Users_From_File extends BaseJavaMigration {
                     statement.setString(4, fields[3]); // last_name
                     statement.setString(5, fields[4]); // city
                     statement.setString(6, fields[5]); // state
-                    statement.setBoolean(7, "true".equalsIgnoreCase(fields[8])); // sports
-                    statement.setBoolean(8, "true".equalsIgnoreCase(fields[9])); // theatre
-                    statement.setBoolean(9, "true".equalsIgnoreCase(fields[10])); // concerts
-                    statement.setBoolean(10, "true".equalsIgnoreCase(fields[11])); // jazz
-                    statement.setBoolean(11, "true".equalsIgnoreCase(fields[12])); // classical
-                    statement.setBoolean(12, "true".equalsIgnoreCase(fields[13])); // opera
-                    statement.setBoolean(13, "true".equalsIgnoreCase(fields[14])); // rock
-                    statement.setBoolean(14, "true".equalsIgnoreCase(fields[15])); // vegas
-                    statement.setBoolean(15, "true".equalsIgnoreCase(fields[16])); // broadway
-                    statement.setBoolean(16, "true".equalsIgnoreCase(fields[17])); // musicals
+                    statement.setString(7, fields[6]); //email
+                    statement.setString(8, fields[7]); //phone
+                    statement.setBoolean(9, TRUE.equalsIgnoreCase(fields[8])); // sports
+                    statement.setBoolean(10, TRUE.equalsIgnoreCase(fields[9])); // theatre
+                    statement.setBoolean(11, TRUE.equalsIgnoreCase(fields[10])); // concerts
+                    statement.setBoolean(12, TRUE.equalsIgnoreCase(fields[11])); // jazz
+                    statement.setBoolean(13, TRUE.equalsIgnoreCase(fields[12])); // classical
+                    statement.setBoolean(14, TRUE.equalsIgnoreCase(fields[13])); // opera
+                    statement.setBoolean(15, TRUE.equalsIgnoreCase(fields[14])); // rock
+                    statement.setBoolean(16, TRUE.equalsIgnoreCase(fields[15])); // vegas
+                    statement.setBoolean(17, TRUE.equalsIgnoreCase(fields[16])); // broadway
+                    statement.setBoolean(18, TRUE.equalsIgnoreCase(fields[17])); // musicals
 
                     statement.executeUpdate();
+                    connection.commit();
                 } catch (Exception e) {
+                    System.out.println("Erro ao inserir a linha");
+                    System.out.println(line);
                 }
             }
         }
