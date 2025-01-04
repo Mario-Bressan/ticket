@@ -1,27 +1,26 @@
 package com.delogic.ticket.controller;
 
-import com.delogic.ticket.entity.User;
-import com.delogic.ticket.repository.UsersRepository;
+import com.delogic.ticket.dto.UserDto;
+import com.delogic.ticket.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UsersRepository usersRepository;
+    private final UserService userService;
 
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        return ResponseEntity.ok(StreamSupport.stream(usersRepository.findAll().spliterator(), false)
-                .toList());
+    public ResponseEntity<Page<UserDto>> findAll(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(userService.findAll(Pageable.ofSize(size).withPage(page)));
     }
 }
