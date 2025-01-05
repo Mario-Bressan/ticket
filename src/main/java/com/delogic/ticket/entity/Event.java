@@ -25,8 +25,11 @@ public class Event {
     private LocalDateTime startTime;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "date_id", referencedColumnName = "date_id")
-    private Date date;
+    private EventDate date;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_id", referencedColumnName = "venue_id")
+    private Venue venue;
 }

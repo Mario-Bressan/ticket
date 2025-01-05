@@ -1,0 +1,33 @@
+package com.delogic.ticket.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "dates")
+public class EventDate {
+
+    @Id
+    @Column(name = "date_id")
+    private Long id;
+    @Column(name = "calendar_date")
+    private LocalDate calendarDate;
+    private String day;
+    private Integer week;
+    private String month;
+    private Integer quarter;
+    private Integer year;
+    private Boolean holidayFlag;
+}

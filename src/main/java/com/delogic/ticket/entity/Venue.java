@@ -14,17 +14,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "dates")
-public class Date {
+@Table(name = "venues")
+public class Venue {
 
     @Id
-    @Column(name = "date_id")
+    @Column(name = "venue_id")
     private Long id;
-    private String calendarDate;
-    private String day;
-    private Integer week;
-    private String month;
-    private Integer quarter;
-    private Integer year;
-    private Boolean holidayFlag;
+    @Column(name = "venue_name")
+    private String name;
+    private String city;
+    private String state;
+    private Integer seatingCapacity;
 }

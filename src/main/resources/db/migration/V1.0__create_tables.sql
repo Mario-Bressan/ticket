@@ -28,7 +28,7 @@ CREATE TABLE categories
 CREATE TABLE dates
 (
     date_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
-    calendar_date VARCHAR(10) NOT NULL,
+    calendar_date date NOT NULL,
     day           VARCHAR(2),
     week          INT,
     month         VARCHAR(3),

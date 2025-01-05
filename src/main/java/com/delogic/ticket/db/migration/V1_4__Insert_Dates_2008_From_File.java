@@ -26,7 +26,7 @@ public class V1_4__Insert_Dates_2008_From_File extends BaseJavaMigration {
 
                 try (PreparedStatement statement = connection.prepareStatement(
                         "INSERT INTO dates (date_id, calendar_date, day, week, month, quarter, year, holiday_flag) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+                                "VALUES (?, str_to_date(?, '%Y-%m-%d'), ?, ?, ?, ?, ?, ?)")) {
 
                     statement.setInt(1, Integer.parseInt(fields[0]));
                     statement.setDate(2, java.sql.Date.valueOf(fields[1]));

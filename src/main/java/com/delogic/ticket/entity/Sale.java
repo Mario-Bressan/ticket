@@ -30,8 +30,11 @@ public class Sale {
     @JoinColumn(name = "buyer_id", referencedColumnName = "user_id")
     private User buyer;
     @OneToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    private Event event;
+    @OneToOne
     @JoinColumn(name = "date_id", referencedColumnName = "date_id")
-    private Date date;
+    private EventDate date;
     private Integer quantitySold;
     private BigDecimal pricePaid;
     private BigDecimal commission_amount;
